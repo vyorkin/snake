@@ -34,6 +34,9 @@ cabal.project.local
 tags
 codex.tags
 
+# Nix
+.cabal
+
 # IntellijIDEA
 .idea/
 .ideaHaskellLib/

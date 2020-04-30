@@ -1,0 +1,3 @@
+[submodule "vendor/apecs-random"]
+	path = vendor/apecs-random
+	url = https://gitlab.com/dpwiz/apecs-random.git
