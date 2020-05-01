@@ -45,6 +45,8 @@ library
                          -- Snake.Components.Hole
                          -- Snake.Components.Bomb
 
+                       Graphics.Rendering.OpenGL.Extra
+
   build-depends:       base ^>= 4.13
                      , text ^>= 1.2
                      , bytestring ^>= 0.10
@@ -92,6 +94,7 @@ library
                        TypeApplications
                        ViewPatterns
                        NoStarIsType
+                       BlockArguments
 
 executable snake
   hs-source-dirs:      app

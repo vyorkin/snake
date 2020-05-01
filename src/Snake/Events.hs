@@ -17,23 +17,6 @@ import Snake.Components (Window(..), Camera(..), SystemW)
 import qualified Snake.Components.Time.System as Time
 import qualified Snake.Window as Window
 
-onKeyDown :: SDL.Keysym -> SystemW ()
-onKeyDown SDL.Keysym{..} = do
-  case keysymKeycode of
-    SDL.KeycodeEscape -> do
-      SDL.quit
-      liftIO exitSuccess
-    SDL.KeycodePause ->
-      Time.togglePause
-    SDL.KeycodeP ->
-      Time.togglePause
-    _ ->
-      pure ()
-
-onKeyUp :: SDL.Keysym -> SystemW ()
-onKeyUp SDL.Keysym{..} =
-  pure ()
-
 -- | Extract and convert SDL event data.
 handle :: Window -> Camera -> SystemW Bool
 handle window camera = do
@@ -63,9 +46,26 @@ handle window camera = do
 
     onWindowSizeChanged SDL.WindowSizeChangedEventData{..} = do
       traceM $ "Window resized: " <> show windowSizeChangedEventSize
-      let V2 width height = fmap fromIntegral windowSizeChangedEventSize
+      let V2 width height = fromIntegral <$> windowSizeChangedEventSize
       Apecs.set Apecs.global $ Window
         { _windowWidth  = width
         , _windowHeight = height
         , _windowScale  = 1.0
         }
+
+onKeyDown :: SDL.Keysym -> SystemW ()
+onKeyDown SDL.Keysym{..} = do
+  case keysymKeycode of
+    SDL.KeycodeEscape -> do
+      SDL.quit
+      liftIO exitSuccess
+    SDL.KeycodePause ->
+      Time.togglePause
+    SDL.KeycodeP ->
+      Time.togglePause
+    _ ->
+      pure ()
+
+onKeyUp :: SDL.Keysym -> SystemW ()
+onKeyUp SDL.Keysym{..} =
+  pure ()

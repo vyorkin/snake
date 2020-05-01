@@ -54,6 +54,6 @@ glWindow mode = SDL.defaultWindow
     glConfig  = SDL.defaultOpenGL { SDL.glProfile = glProfile }
     -- The compatibility profile allows you to
     -- use deprecated functions such as immediate mode
-    glProfile = SDL.Compatibility SDL.Normal 4 4
+    glProfile = SDL.Compatibility SDL.Normal 3 0
     -- GL 4.4 is the maximum version supported by
     -- my Intel® HD Graphics 620

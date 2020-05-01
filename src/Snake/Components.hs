@@ -50,8 +50,7 @@ instance Component Window where
 data Camera = Camera
   { _cameraScale :: Float
   , _cameraOffset :: V2 Float
-  }
-  deriving (Eq, Show)
+  } deriving (Eq, Show)
 
 instance Semigroup Camera where
   a <> b = Camera

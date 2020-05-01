@@ -25,7 +25,7 @@ setSize windowSize =
     , _windowScale  = 1.0
     }
   where
-    V2 windowWidth windowHeight = fmap fromIntegral windowSize
+    V2 windowWidth windowHeight = fromIntegral <$> windowSize
 
 sizeMax :: Window -> Float
 sizeMax Window{..} = max _windowWidth _windowHeight
