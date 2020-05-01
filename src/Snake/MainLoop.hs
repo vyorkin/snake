@@ -19,7 +19,7 @@ import qualified Snake.Window as Window
 
 mainLoop :: SDL.Window -> SystemW ()
 mainLoop sdlWindow = do
-  (camera, window) <- Apecs.get Apecs.global
+  (camera@Camera{..}, window) <- Apecs.get Apecs.global
 
   let
     windowQuad = glDouble <$> Window.quad window
@@ -37,7 +37,7 @@ mainLoop sdlWindow = do
 
     resetProjection 1.0
     Draw.drawBackdrop
-    resetProjection (glDouble $ _cameraScale camera)
+    resetProjection (glDouble _cameraScale)
     Draw.drawScene
     resetProjection 1.0
     Draw.drawUI

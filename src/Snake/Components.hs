@@ -78,7 +78,6 @@ makeWorld "World"
   , ''Position
   , ''Velocity
   , ''Snake
-  , ''Snake.Cell
   , ''Time.Pause
   ]
 

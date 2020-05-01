@@ -34,6 +34,9 @@ library
                        Snake.Events
 
                        Snake.Components
+                         Snake.Components.Programs
+                         Snake.Components.Textures
+
                          Snake.Components.Time.Types
                          Snake.Components.Time.System
 
@@ -41,7 +44,14 @@ library
                          Snake.Components.Snake.System
                          Snake.Components.Snake.Draw
 
-                         -- Snake.Components.Food
+                         Snake.Components.Food.Types
+                         Snake.Components.Food.System
+                         Snake.Components.Food.Draw
+
+                         Snake.Components.Field.Types
+                         Snake.Components.Field.System
+                         Snake.Components.Field.Draw
+
                          -- Snake.Components.Hole
                          -- Snake.Components.Bomb
 
