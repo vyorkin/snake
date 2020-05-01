@@ -16,8 +16,6 @@ module Snake.Components
   , Camera(..)
   , cameraOffset
   , cameraScale
-
-  , Position(..)
   ) where
 
 import Apecs
@@ -28,14 +26,6 @@ import Linear (V2)
 import Snake.Components.Time.Types as Time
 import Snake.Components.Snake.Types (Snake)
 import qualified Snake.Components.Snake.Types as Snake
-
-newtype Position = Position
-  { unPosition :: V2 Int
-  } deriving (Eq, Ord, Show)
-
-newtype Velocity = Velocity
-  { unVelocity :: Float
-  } deriving (Eq, Ord, Show)
 
 data Window = Window
   { _windowWidth  :: Float
@@ -67,16 +57,9 @@ instance Monoid Camera where
 instance Component Camera where
   type Storage Camera = Global Camera
 
-makeMapComponents
-  [ ''Position
-  , ''Velocity
-  ]
-
 makeWorld "World"
   [ ''Window
   , ''Camera
-  , ''Position
-  , ''Velocity
   , ''Snake
   , ''Time.Pause
   ]
