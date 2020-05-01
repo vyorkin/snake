@@ -19,13 +19,14 @@ module Snake.Components
   ) where
 
 import Apecs
-import Apecs.TH (makeMapComponents)
 import Control.Lens.TH (makeLenses)
 import Linear (V2)
+import Apecs.Components.Random (RandomGen)
 
 import Snake.Components.Time.Types as Time
 import Snake.Components.Snake.Types (Snake)
-import qualified Snake.Components.Snake.Types as Snake
+import Snake.Components.Programs (Programs)
+import Snake.Components.Textures (Textures)
 
 data Window = Window
   { _windowWidth  :: Float
@@ -58,10 +59,15 @@ instance Component Camera where
   type Storage Camera = Global Camera
 
 makeWorld "World"
-  [ ''Window
+  [ ''Textures
+  , ''Programs
+
+  , ''Window
   , ''Camera
+
   , ''Snake
   , ''Time.Pause
+  , ''RandomGen
   ]
 
 type SystemW a = SystemT World IO a

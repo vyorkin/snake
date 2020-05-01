@@ -22,11 +22,11 @@ import Data.Foldable (for_)
 import Data.Map.Strict (Map)
 import Data.StateVar (($=))
 import Debug.Trace (traceM)
-import Foreign
+import Foreign (Int32, Ptr)
 import GHC.Stack (HasCallStack)
 import Linear (V2(..))
-import System.Directory
-import System.FilePath
+import System.Directory (listDirectory, doesDirectoryExist)
+import System.FilePath ((</>), dropExtension, makeRelative)
 
 import qualified Apecs
 import qualified Data.Map.Strict as Map
@@ -60,27 +60,24 @@ data Texture = Texture
 textureData :: FilePath
 textureData = "data" </> "textures"
 
-loadAll
-  :: ( Apecs.Has w m Textures
-     , MonadIO m
-     )
-  => SystemT w m ()
-loadAll = walkFrom textureData
-  where
-    walkFrom current = do
-      names <- Apecs.liftIO $ listDirectory current
-      for_ names $ \name -> do
-        let next = current </> name
-        isDir <- Apecs.liftIO $ doesDirectoryExist next
-        if isDir then
-          walkFrom next
-        else do
-          let textureId = Key . dropExtension $ makeRelative textureData next
-          texture <- Apecs.liftIO $ loadTexture (GL.Linear', GL.Repeated, GL.Repeat) next
-          traceM $ "Loaded texture as " <> show (unKey textureId)
-          traceM $ show texture
-          Apecs.modify Apecs.global $
-            Textures . Map.insert textureId texture . unTextures
+loadAll :: (Apecs.Has w m Textures, MonadIO m) => SystemT w m ()
+loadAll = loadFrom textureData
+
+loadFrom :: (Apecs.Has w m Textures, MonadIO m) => FilePath -> SystemT w m ()
+loadFrom current = do
+  names <- Apecs.liftIO $ listDirectory current
+  for_ names $ \name -> do
+    let next = current </> name
+    isDir <- Apecs.liftIO $ doesDirectoryExist next
+    if isDir then
+      loadFrom next
+    else do
+      let textureId = Key . dropExtension $ makeRelative textureData next
+      texture <- Apecs.liftIO $ loadTexture (GL.Linear', GL.Repeated, GL.Repeat) next
+      traceM $ "Loaded texture as " <> show (unKey textureId)
+      traceM $ show texture
+      Apecs.modify Apecs.global $
+        Textures . Map.insert textureId texture . unTextures
 
 loadTexture :: (GL.TextureFilter, GL.Repetition, GL.Clamping) -> FilePath -> IO Texture
 loadTexture (glFilter, glRepeat, glClamp) source = do
@@ -118,7 +115,7 @@ loadImage :: Integral size => FilePath -> (size -> size -> Ptr () -> IO a) -> IO
 loadImage filePath action =
   bracket (SDL.Image.load filePath) SDL.freeSurface $ \source -> do
     V2 width height <- SDL.surfaceDimensions source
-    let sdlSize = V2 (fromIntegral width) (fromIntegral height)
+    let sdlSize = V2 width height
     bracket (SDL.createRGBSurface sdlSize SDL.RGBA8888) SDL.freeSurface $ \temporary -> do
       _nothing <- SDL.surfaceBlit source Nothing temporary Nothing
       bracket_ (SDL.lockSurface temporary) (SDL.unlockSurface temporary) $ do

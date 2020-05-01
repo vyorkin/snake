@@ -6,7 +6,6 @@ import Debug.Trace (traceM)
 import Data.StateVar (($=))
 
 import qualified Apecs
-import qualified Apecs.System.Random as Random
 import qualified Graphics.Rendering.OpenGL as GL
 import qualified SDL
 
@@ -15,6 +14,9 @@ import Snake.Components as Components
 import qualified Snake.Window as Window
 import qualified Snake.Scene as Scene
 import Snake.MainLoop (mainLoop)
+
+import qualified Snake.Components.Programs as Programs
+import qualified Snake.Components.Textures as Textures
 
 run :: Config -> IO ()
 run Config{..} = do
@@ -38,6 +40,8 @@ run Config{..} = do
     windowSize <- SDL.glGetDrawableSize window
     traceM $ "Initial window: " <> show windowSize
     Window.setSize windowSize
+    Programs.loadAll
+    Textures.loadAll
     Scene.init _level
     mainLoop window
 

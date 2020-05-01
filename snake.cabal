@@ -32,6 +32,11 @@ library
                        Snake.Tick
                        Snake.Draw
                        Snake.Events
+                       Snake.Lib
+
+                       Snake.Programs.Textured
+                       Snake.Programs.Sprite
+                       Snake.Programs.Solid
 
                        Snake.Components
                          Snake.Components.Programs
@@ -63,7 +68,7 @@ library
                      , containers ^>= 0.6
                      , unordered-containers ^>= 0.2
                      , vector ^>= 0.12
-                     , linear ^>= 1.20
+                     , linear ^>= 1.21
                      , sdl2 ^>= 2.5
                      , sdl2-image ^>= 2.0
                      , OpenGL ^>= 3.0
