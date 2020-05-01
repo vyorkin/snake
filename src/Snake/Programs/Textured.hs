@@ -22,8 +22,6 @@ drawWith key action =
     GL.activeTexture $= GL.TextureUnit 0
     GL.textureBinding GL.Texture2D $= Just textureObject
     setUniform "texture" $ GL.TextureUnit 0
-    setUniform "u_invGamma" $ GL.Vector4 @Float 1 1 1 1
-    setUniform "u_opacity" (1.0 :: Float)
 
     withAttribute "texcoord" $ \texcoord ->
       Lib.withVertexAttribArray texcoord Lib.texVertices $

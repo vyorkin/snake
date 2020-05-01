@@ -40,6 +40,7 @@ import System.Exit (exitFailure)
 import System.FilePath ((</>), (<.>))
 
 import qualified Apecs
+import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -49,22 +50,20 @@ import qualified Graphics.Rendering.OpenGL as GL
 
 newtype Programs = Programs
   { unPrograms :: Map.Map Key Compiled
-  }
-  deriving stock (Show)
-  deriving newtype (Semigroup, Monoid)
+  } deriving stock (Show)
+    deriving newtype (Semigroup, Monoid)
 
 instance Component Programs where
   type Storage Programs = Global Programs
 
--- TODO: generate Yesod-style static keys
 newtype Key = Key
   { unKey :: FilePath
   } deriving (Eq, Ord, Show)
 
 data Compiled = Compiled
   { compiledProgram  :: GL.Program
-  , compiledAttrs    :: Map.Map String GL.AttribLocation
-  , compiledUniforms :: Map.Map String GL.UniformLocation -- BUG: compile-time uniforms don't work?
+  , compiledAttrs    :: Map String GL.AttribLocation
+  , compiledUniforms :: Map String GL.UniformLocation -- BUG: compile-time uniforms don't work?
   } deriving (Eq, Ord, Show)
 
 programData :: FilePath

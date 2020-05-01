@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
+
 module Snake.Lib
   ( withVertexAttribArray
   , texVertices

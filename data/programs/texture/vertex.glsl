@@ -1,8 +1,6 @@
 attribute vec2 coord2d;
 attribute vec2 texcoord;
 
-// uniform mat4 mvp;
-
 varying vec2 f_texcoord;
 
 void main(void) {
