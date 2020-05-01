@@ -13,8 +13,8 @@ import Snake.Config (Level(..))
 import qualified Snake.Components.Snake.System as Snake
 
 init :: Level -> SystemW ()
-init Level{..} = pure ()
-  -- dir <- Random.boundedEnum @Snake.Direction
-  -- snake = Snake.new _speed dir
+init level = do
+  snake <- Snake.new level
   -- sequence_ . replicate _food $
   --   Food.spawnRandom _width _height
+  pure ()

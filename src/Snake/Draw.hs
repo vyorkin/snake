@@ -14,6 +14,9 @@ import qualified Snake.Window as Window
 import qualified Snake.Programs.Textured as Textured
 import qualified Snake.Lib as Lib
 import qualified Snake.Components.Textures as Textures
+import qualified Snake.Components.Field.Draw as Field
+import qualified Snake.Components.Snake.Draw as Snake
+import qualified Snake.Components.Food.Draw as Food
 
 drawBackdrop :: SystemW ()
 drawBackdrop = do
@@ -23,7 +26,10 @@ drawBackdrop = do
     Lib.drawQuads coord2d $ Lib.toQuad $ V4 1 1 0 0 ^* side
 
 drawScene :: SystemW ()
-drawScene = pure ()
+drawScene = do
+  Field.draw
+  Snake.draw
+  Food.draw
 
 drawUI :: SystemW ()
-drawUI = pure ()
+drawUI = Snake.drawUI

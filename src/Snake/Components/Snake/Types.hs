@@ -9,7 +9,9 @@ import Control.Lens.TH (makeLenses)
 
 data Snake = Snake
   { _dir  :: !Dir
-  , _body :: ![V2 Int]
+  , _head :: !(V2 Int)
+  , _tail :: ![V2 Int]
+  , _size :: !Float
   } deriving (Show)
 
 data Dir = U | D | L | R
