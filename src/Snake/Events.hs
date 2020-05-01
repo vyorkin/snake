@@ -14,6 +14,8 @@ import qualified Apecs
 import qualified SDL
 
 import Snake.Components (Window(..), Camera(..), SystemW)
+import Snake.Components.Snake.Types (Dir(..))
+import qualified Snake.Components.Snake.System as Snake
 import qualified Snake.Components.Time.System as Time
 import qualified Snake.Window as Window
 
@@ -63,6 +65,14 @@ onKeyDown SDL.Keysym{..} = do
       Time.togglePause
     SDL.KeycodeP ->
       Time.togglePause
+    SDL.KeycodeUp ->
+      Snake.setDir U
+    SDL.KeycodeDown ->
+      Snake.setDir D
+    SDL.KeycodeLeft ->
+      Snake.setDir L
+    SDL.KeycodeRight ->
+      Snake.setDir R
     _ ->
       pure ()
 

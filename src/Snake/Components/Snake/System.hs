@@ -5,11 +5,13 @@ module Snake.Components.Snake.System
   , new
   , destroy
   , tick
+  , setDir
   ) where
 
 import Prelude hiding (head, tail)
 
-import Apecs (Entity, Not(..), cmap, cmapM_, newEntity, ($=))
+import Control.Lens ((.~))
+import Apecs (Entity, Not(..), cmap, cmapM, cmapM_, newEntity, ($=))
 import qualified Apecs.System.Random as Random
 import Linear (V2(..), (^*))
 
@@ -28,7 +30,10 @@ new Level{..} = do
   newEntity (Snake {..})
 
 tick :: Float -> SystemW ()
-tick _dt = pure ()
+tick _dt = cmap $ \snake@(Snake{..}) -> snake { _head = _head + (dirToV2 _dir) }
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @SnakeComponents
+
+setDir :: Dir -> SystemW ()
+setDir v = cmap $ dir .~ v

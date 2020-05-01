@@ -19,8 +19,8 @@ data Dir = U | D | L | R
 
 dirToV2 :: Dir -> V2 Int
 dirToV2 = \case
-  U -> V2 0 (-1)
-  D -> V2 0 1
+  U -> V2 0 1
+  D -> V2 0 (-1)
   L -> V2 (-1) 0
   R -> V2 1 0
 
