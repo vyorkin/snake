@@ -12,6 +12,7 @@ data Snake = Snake
   , _head :: !(V2 Int)
   , _tail :: ![V2 Int]
   , _size :: !Float
+  , _speed :: !Float
   } deriving (Show)
 
 data Dir = U | D | L | R

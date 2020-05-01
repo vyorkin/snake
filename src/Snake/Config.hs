@@ -19,7 +19,7 @@ data Config = Config
 data Level = Level
   { _width :: !Int
   , _height :: !Int
-  , _speed :: !Int
+  , _speed :: !Float
   } deriving (Show)
 
 -- | Loads the @config.toml@ file.
@@ -30,7 +30,7 @@ levelCodec :: TomlCodec Level
 levelCodec = Level
   <$> Toml.int "width" .= _width
   <*> Toml.int "height" .= _height
-  <*> Toml.int "speed" .= _speed
+  <*> Toml.float "speed" .= _speed
 
 configCodec :: TomlCodec Config
 configCodec = Config

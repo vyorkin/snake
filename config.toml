@@ -3,5 +3,5 @@ game.name = "Snake"
 [level]
   width = 20  # field width
   height = 20 # field height
-  speed = 1   # cells per second
+  speed = 2.0  # cells per second
   food = 1    # amount of food to spawn

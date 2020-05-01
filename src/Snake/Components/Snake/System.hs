@@ -13,6 +13,7 @@ import Prelude hiding (head, tail)
 import Control.Lens ((.~))
 import Apecs (Entity, Not(..), cmap, cmapM, cmapM_, newEntity, ($=))
 import qualified Apecs.System.Random as Random
+import GHC.Float (float2Int)
 import Linear (V2(..), (^*))
 
 import Snake.Config (Level(..))
@@ -30,7 +31,8 @@ new Level{..} = do
   newEntity (Snake {..})
 
 tick :: Float -> SystemW ()
-tick _dt = cmap $ \snake@(Snake{..}) -> snake { _head = _head + (dirToV2 _dir) }
+tick _dt = cmap $ \snake@(Snake{..}) ->
+  snake { _head = (_head + dirToV2 _dir ^* float2Int _speed) }
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @SnakeComponents
