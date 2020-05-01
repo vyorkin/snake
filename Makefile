@@ -1,12 +1,15 @@
+EXE := snake
 GHC_OPTIONS := --ghc-options='-ferror-spans -fhide-source-paths' # -fprint-unicode-syntax
 
 dev: all
 	ghcid --command="cabal new-repl $(GHC_OPTIONS)" | source-highlight -s haskell -f esc
 repl:
-	cabal new-repl $(GHC_OPTIONS) exe:haskbot
+	cabal new-repl $(GHC_OPTIONS) exe:$(EXE)
 
 all:
 	cabal new-build $(GHC_OPTIONS) all
+run:
+	cabal new-run $(SNAKE)
 clean:
 	cabal new-clean
 check:
@@ -26,4 +29,4 @@ noprof:
 hoogle:
 	hoogle server --local
 
-.PHONY: dev repl clean all check test docs tags prof noprof hoogle
+.PHONY: dev repl clean all run check test docs tags prof noprof hoogle
