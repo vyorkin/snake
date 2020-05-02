@@ -31,7 +31,7 @@ mainLoop level@Level{..} sdlWindow = do
 
   quit <- Events.handle window camera
   unless quit do
-    Tick.tick (1 / 60)
+    Tick.tick level (1 / 60)
 
     setViewport window
     clearScreen
@@ -39,9 +39,9 @@ mainLoop level@Level{..} sdlWindow = do
     resetProjection 1.0
     Draw.drawBackdrop
     resetProjection (glDouble _cameraScale)
-    Draw.drawField (V2 _levelWidth _levelHeight)
+    Draw.drawField level
     resetProjection 1.0
-    Draw.drawScene
+    Draw.drawScene level
     resetProjection 1.0
     Draw.drawUI
 

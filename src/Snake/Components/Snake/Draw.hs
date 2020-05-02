@@ -8,19 +8,20 @@ import Control.Monad (forM_)
 import Control.Lens ((&), (.~))
 import Linear (V2(..), lerp, (^*))
 import Data.List.NonEmpty (NonEmpty(..))
+import GHC.Float (int2Float)
 import qualified Apecs.System.Random as Random
 import qualified Apecs
 
+import Snake.Config (Level(..))
 import qualified Snake.Config as Config
 import Snake.Components (SystemW)
 import Snake.Components.Snake.Types
 import Snake.Components.Textures (toTextureKey)
 import qualified Snake.Components.Textures as Textures
 import qualified Snake.Programs.Sprite as Sprite
-import GHC.Float (int2Float)
 
-draw :: SystemW ()
-draw = Apecs.cmapM_ $ \(Snake{..}) -> do
+draw :: Level -> SystemW ()
+draw Level{..} = Apecs.cmapM_ \Snake{..} -> do
   drawCell _snakeHead
   forM_ _snakeTail drawCell
 

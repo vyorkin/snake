@@ -13,6 +13,8 @@ A simple snake game.
 All credits to https://icrbow.itch.io/ who inspired me and built
 the framework on which this game is based.
 
+![Screen0](img/screen0.png)
+
 ## Building
 
 I’m using [NixOS](https://nixos.org/) for development so there

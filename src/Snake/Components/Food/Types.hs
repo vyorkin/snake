@@ -10,9 +10,9 @@ import Control.Lens.TH (makeLenses)
 data FoodType
   = Cake
   | Carrot
-  | Cherry
-  | Lemon
   | Orange
+  | Lemon
+  | Cherry
   | Pear
   deriving (Eq, Show, Enum, Bounded)
 
@@ -22,8 +22,5 @@ data Food = Food
   , _foodTimer :: !Float
   }
 
-makeMapComponents
-  [ ''Food
-  ]
-
+makeMapComponents [''Food]
 makeLenses ''Food

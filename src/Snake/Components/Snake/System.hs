@@ -33,8 +33,8 @@ new Level{..} = do
       _snakeSpeed = _levelSnakeSpeed
   newEntity Snake{..}
 
-tick :: Float -> SystemW ()
-tick _dt = cmap $ \snake@(Snake{..}) ->
+tick :: Level -> Float -> SystemW ()
+tick _level _dt = cmap $ \snake@(Snake{..}) ->
   let pos = _snakeCellPos _snakeHead + dirToV2 _snakeDir ^* float2Int _snakeSpeed
   in snake { _snakeHead = _snakeHead { _snakeCellPos = pos } }
 

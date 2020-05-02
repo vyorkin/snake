@@ -27,8 +27,10 @@ spawn Level{..} = do
       _foodTimer = 0.0
   newEntity Food{..}
 
-tick :: Float -> SystemW ()
-tick dt = cmap $ foodTimer +~ dt
+tick :: Level -> Float -> SystemW ()
+tick level dt = do
+  cmap $ foodTimer +~ dt
+  Lib.sometimes (dt / 10.0) (spawn level)
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @FoodComponents
