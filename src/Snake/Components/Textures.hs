@@ -13,8 +13,10 @@ module Snake.Components.Textures
 
     -- * Usage
   , get
+  , toTextureKey
   ) where
 
+import qualified Data.Char as Char (toLower)
 import Apecs (Component(..), SystemT, Global)
 import Control.Exception (bracket, bracket_)
 import Control.Monad.IO.Class (MonadIO)
@@ -138,3 +140,9 @@ get key = do
       error $ "Texture not found: " <> show (unKey key)
     Just texture ->
       pure texture
+
+toTextureKey :: Show a => FilePath -> a -> Key
+toTextureKey folder = Key . (folder </>) . lowercase . show
+  where
+    lowercase (c:cs) = Char.toLower c : cs
+    lowercase [] = []

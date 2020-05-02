@@ -53,10 +53,6 @@ library
                          Snake.Components.Food.System
                          Snake.Components.Food.Draw
 
-                         Snake.Components.Field.Types
-                         Snake.Components.Field.System
-                         Snake.Components.Field.Draw
-
                          -- Snake.Components.Hole
                          -- Snake.Components.Bomb
 

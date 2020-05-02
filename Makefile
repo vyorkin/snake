@@ -4,7 +4,7 @@ GHC_OPTIONS := --ghc-options='-ferror-spans -fhide-source-paths' # -fprint-unico
 dev: all
 	ghcid --command="cabal new-repl $(GHC_OPTIONS)" | source-highlight -s haskell -f esc
 repl:
-	cabal new-repl $(GHC_OPTIONS) exe:$(EXE)
+	cabal new-repl $(GHC_OPTIONS)
 
 all:
 	cabal new-build $(GHC_OPTIONS) all

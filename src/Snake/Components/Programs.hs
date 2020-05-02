@@ -140,9 +140,7 @@ compileShader :: GL.ShaderType -> Text -> IO GL.Shader
 compileShader shaderType source = do
   shader <- GL.createShader shaderType
   GL.shaderSourceBS shader $= Text.encodeUtf8 source
-
   GL.compileShader shader
-
   compiled <- GL.get $ GL.compileStatus shader
   unless compiled $ do
     traceM $ "Error in " <> show shaderType
@@ -220,7 +218,5 @@ withVertexAttribArray compiled name vertices action =
         ( GL.ToFloat
         , GL.VertexArrayDescriptor 2 GL.Float 0 ptr
         )
-
     action
-
     GL.vertexAttribArray location $= GL.Disabled

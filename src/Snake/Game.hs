@@ -24,7 +24,7 @@ run Config{..} = do
   SDL.HintRenderScaleQuality $= SDL.ScaleNearest -- ScaleLinear
 
   let windowCfg = glWindow SDL.FullscreenDesktop -- Fullscree, Windowed
-  window <- SDL.createWindow _name windowCfg
+  window <- SDL.createWindow _configName windowCfg
   SDL.showWindow window
 
   _glContext <- SDL.glCreateContext window
@@ -42,8 +42,8 @@ run Config{..} = do
     Window.setSize windowSize
     Programs.loadAll
     Textures.loadAll
-    Scene.init _level
-    mainLoop window
+    Scene.init _configLevel
+    mainLoop _configLevel window
 
   SDL.destroyWindow window
   SDL.quit

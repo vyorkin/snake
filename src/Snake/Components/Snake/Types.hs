@@ -7,12 +7,24 @@ import Linear (V2(..))
 import Apecs.TH (makeMapComponents)
 import Control.Lens.TH (makeLenses)
 
+data SnakeCellColor
+  = Blue
+  | Green
+  | Pink
+  | Yellow
+  deriving (Eq, Show, Enum, Bounded)
+
+data SnakeCell = SnakeCell
+  { _snakeCellColor :: !SnakeCellColor
+  , _snakeCellPos :: !(V2 Int)
+  , _snakeCellTimer :: !Float
+  } deriving (Show)
+
 data Snake = Snake
-  { _dir  :: !Dir
-  , _head :: !(V2 Int)
-  , _tail :: ![V2 Int]
-  , _size :: !Float
-  , _speed :: !Float
+  { _snakeDir :: !Dir
+  , _snakeHead :: !SnakeCell
+  , _snakeTail :: ![SnakeCell]
+  , _snakeSpeed :: !Float
   } deriving (Show)
 
 data Dir = U | D | L | R
@@ -25,8 +37,7 @@ dirToV2 = \case
   L -> V2 (-1) 0
   R -> V2 1 0
 
-makeMapComponents
-  [ ''Snake
-  ]
+makeMapComponents [''Snake]
 
+makeLenses ''SnakeCell
 makeLenses ''Snake
