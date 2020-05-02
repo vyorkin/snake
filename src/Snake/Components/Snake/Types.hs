@@ -38,6 +38,5 @@ dirToV2 = \case
   R -> V2 1 0
 
 makeMapComponents [''Snake]
-
 makeLenses ''SnakeCell
 makeLenses ''Snake

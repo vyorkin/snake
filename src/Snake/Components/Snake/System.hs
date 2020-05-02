@@ -24,8 +24,8 @@ type SnakeComponents = (Snake)
 
 new :: Level -> SystemW Entity
 new Level{..} = do
-  _snakeDir <- Random.boundedEnum @Dir
-  _snakeCellColor <- Random.boundedEnum @SnakeCellColor
+  _snakeDir <- Random.boundedEnum
+  _snakeCellColor <- Random.boundedEnum
   let _snakeCellPos = V2 (_levelWidth `div` 2) (_levelHeight `div` 2)
       _snakeCellTimer = 0.0
       _snakeHead = SnakeCell{..}

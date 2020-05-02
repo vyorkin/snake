@@ -1,8 +1,12 @@
-# Snake
+# Snake (WIP)
 
-A simple snake game made in a couple of hours.
+A simple snake game.
 
-**Warning**: I’m still a Haskell beginner, so I may do things wrong.
+**Warnings**:
+
+* I’m still a Haskell beginner, so I may do things wrong.
+* Yes, snake can move and there is some food to eat, but the
+  game is not finished yet ;)
 
 ## Credits
 

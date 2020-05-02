@@ -25,6 +25,7 @@ import Apecs.Components.Random (RandomGen)
 
 import Snake.Components.Time.Types as Time
 import Snake.Components.Snake.Types (Snake)
+import Snake.Components.Food.Types (Food)
 import Snake.Components.Programs (Programs)
 import Snake.Components.Textures (Textures)
 
@@ -66,6 +67,7 @@ makeWorld "World"
   , ''Camera
 
   , ''Snake
+  , ''Food
   , ''Time.Pause
   , ''RandomGen
   ]

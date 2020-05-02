@@ -11,10 +11,10 @@ import qualified Apecs.System.Random as Random
 import Snake.Components (SystemW)
 import Snake.Config (Level(..))
 import qualified Snake.Components.Snake.System as Snake
+import qualified Snake.Components.Food.System as Food
 
 init :: Level -> SystemW ()
 init level@Level{..} = do
-  snake <- Snake.new level
-  -- sequence_ . replicate _food $
-  --   Food.spawnRandom _levelWidth _levelHeight
-  pure ()
+  _ <- Snake.new level
+  sequence_ . replicate _levelFoodSpawn $
+    Food.spawn level
