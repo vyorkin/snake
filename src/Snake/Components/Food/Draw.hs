@@ -19,7 +19,7 @@ draw level = Apecs.cmapM_ \Food{..} -> do
     tex = toTextureKey "food" _foodType
     eff =
       if _foodTimer < 2.0
-      then mempty & Sprite.effectsOutline .~ Just 5
+      then mempty & Sprite.effectsOutline .~ Just 1.0
       else mempty
   Sprite.draw eff tex Config.cellSize pos
 

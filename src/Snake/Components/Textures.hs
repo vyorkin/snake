@@ -38,9 +38,8 @@ import qualified SDL.Image
 
 newtype Textures = Textures
   { unTextures :: Map Key Texture
-  }
-  deriving stock (Show)
-  deriving newtype (Semigroup, Monoid)
+  } deriving stock (Show)
+    deriving newtype (Semigroup, Monoid)
 
 instance Component Textures where
   type Storage Textures = Global Textures

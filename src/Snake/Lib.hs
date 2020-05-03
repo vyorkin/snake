@@ -17,23 +17,17 @@ module Snake.Lib
 
   , frac
   , seconds
-  , sometimes
   ) where
 
 import Control.Monad.IO.Class (MonadIO(..))
-import Control.Monad (void, when)
 import Data.StateVar (($=))
 import Data.Vector.Storable (Vector)
 import Linear (V2(..), V4(..), unangle)
-import GHC.Float (float2Double, float2Int, int2Float)
+import GHC.Float (float2Int, int2Float)
 
 import qualified SDL
-import qualified Apecs.System.Random as Random
 import qualified Data.Vector.Storable as Vector
 import qualified Graphics.Rendering.OpenGL as GL
-import qualified System.Random.MWC.Probability as MWC
-
-import Snake.Components (SystemW)
 
 withVertexAttribArray :: MonadIO m => GL.AttribLocation -> Vector Float -> m () -> m ()
 withVertexAttribArray location vertices action = do
@@ -151,8 +145,3 @@ frac x = x - int2Float (float2Int x)
 
 seconds :: (Fractional a, MonadIO m) => m a
 seconds = fmap ((/ 1000) . fromIntegral) SDL.ticks
-
-sometimes :: Float -> SystemW a -> SystemW ()
-sometimes chance action = do
-  result <- Random.sample $ MWC.bernoulli (float2Double chance)
-  when result $ void action

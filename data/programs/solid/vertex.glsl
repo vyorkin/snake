@@ -1,7 +1,5 @@
 attribute vec2 coord2d;
 
-// uniform mat4 mvp;
-
 void main(void) {
   gl_Position
     = gl_ProjectionMatrix

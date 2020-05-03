@@ -33,6 +33,7 @@ library
                        Snake.Draw
                        Snake.Events
                        Snake.Lib
+                       Snake.System
 
                        Snake.Programs.Textured
                        Snake.Programs.Sprite
