@@ -19,16 +19,18 @@ import Snake.Components.Snake.Types
 import Snake.Components.Textures (toTextureKey)
 import qualified Snake.Components.Textures as Textures
 import qualified Snake.Programs.Sprite as Sprite
+import Snake.Math (toReal)
 
 draw :: Level -> SystemW ()
-draw Level{..} = Apecs.cmapM_ \Snake{..} -> do
-  drawCell _snakeHead
-  forM_ _snakeTail drawCell
+draw level = Apecs.cmapM_ \Snake{..} -> do
+  drawCell level _snakeHead
+  forM_ _snakeTail (drawCell level)
 
-drawCell :: SnakeCell -> SystemW ()
-drawCell SnakeCell{..} = do
+drawCell :: Level -> SnakeCell -> SystemW ()
+drawCell level SnakeCell{..} = do
   let tex = toTextureKey "snake" _snakeCellColor
-  Sprite.draw mempty tex Config.cellSize (int2Float <$> _snakeCellPos)
+      pos = toReal level _snakeCellPos
+  Sprite.draw mempty tex Config.cellSize pos
 
 drawUI :: SystemW ()
 drawUI = pure ()

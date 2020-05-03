@@ -109,8 +109,6 @@ outline key quadSize color pos turn = do
     withAttribute "texcoord" $ \texcoord ->
       Lib.withVertexAttribArray texcoord Lib.texVertices $
         withAttribute "coord2d" $ \coord2d ->
-          -- XXX: what about ModelView matrix?
-          -- pass mat4 instead of pos?
           Lib.drawQuads coord2d $
             Lib.quadTurn width height x y turn
 

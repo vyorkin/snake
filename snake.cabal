@@ -34,6 +34,7 @@ library
                        Snake.Events
                        Snake.Lib
                        Snake.System
+                       Snake.Math
 
                        Snake.Programs.Textured
                        Snake.Programs.Sprite
@@ -53,6 +54,9 @@ library
                          Snake.Components.Food.Types
                          Snake.Components.Food.System
                          Snake.Components.Food.Draw
+
+                         Snake.Components.Block.Types
+                         Snake.Components.Block.Draw
 
                          -- Snake.Components.Hole
                          -- Snake.Components.Bomb

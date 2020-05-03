@@ -10,7 +10,8 @@ module Snake.Components.Snake.System
 
 import Prelude hiding (head, tail)
 
-import Control.Lens ((.~), (+~))
+import Control.Monad (when)
+import Control.Lens ((.~), (%~), (+~))
 import Apecs (Entity, Not(..), cmap, cmapM, cmapM_, newEntity, ($=), ($~))
 import qualified Apecs.System.Random as Random
 import GHC.Float (float2Int)
@@ -31,12 +32,17 @@ new Level{..} = do
       _snakeHead = SnakeCell{..}
       _snakeTail = []
       _snakeSpeed = _levelSnakeSpeed
+      _snakeTimer = 0.0
   newEntity Snake{..}
 
 tick :: Level -> Float -> SystemW ()
-tick _level _dt = cmap $ \snake@(Snake{..}) ->
-  let pos = _snakeCellPos _snakeHead + dirToV2 _snakeDir ^* float2Int _snakeSpeed
-  in snake { _snakeHead = _snakeHead { _snakeCellPos = pos } }
+tick _level dt = cmapM_ \(Snake{..}, snake) -> do
+  let delta = dirToV2 _snakeDir ^* float2Int _snakeTimer
+  snake $~ snakeHead.snakeCellPos +~ delta
+  snake $~ snakeTimer %~ \t ->
+    if t > 1.0
+    then 0.0
+    else t + dt * _snakeSpeed
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @SnakeComponents

@@ -166,7 +166,8 @@ get key = do
     Just glProg ->
       pure glProg
 
-type SetUniform w m = forall u. (Show u, GL.Uniform u) => String -> u -> SystemT w m ()
+type SetUniform w m = forall u. (Show u, GL.Uniform u) =>
+  String -> u -> SystemT w m ()
 
 type WithCompiled w m = MonadIO m =>
   SetUniform w m ->

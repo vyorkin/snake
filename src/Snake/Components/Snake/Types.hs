@@ -25,6 +25,7 @@ data Snake = Snake
   , _snakeHead :: !SnakeCell
   , _snakeTail :: ![SnakeCell]
   , _snakeSpeed :: !Float
+  , _snakeTimer :: !Float
   } deriving (Show)
 
 data Dir = U | D | L | R

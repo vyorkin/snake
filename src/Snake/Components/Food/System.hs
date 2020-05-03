@@ -14,7 +14,7 @@ import Linear (V2(..), (^*))
 import Snake.Config (Level(..))
 import Snake.Components.Food.Types
 import Snake.Components (SystemW)
-import qualified Snake.Lib as Lib
+import Snake.System (sometimes)
 
 type FoodComponents = (Food)
 
@@ -30,7 +30,7 @@ spawn Level{..} = do
 tick :: Level -> Float -> SystemW ()
 tick level dt = do
   cmap $ foodTimer +~ dt
-  Lib.sometimes (dt / 10.0) (spawn level)
+  sometimes (dt / 10.0) (spawn level)
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @FoodComponents
