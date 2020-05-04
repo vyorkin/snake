@@ -30,7 +30,7 @@ drawCell :: Level -> SnakeCell -> SystemW ()
 drawCell level SnakeCell{..} = do
   let tex = toTextureKey "snake" _snakeCellColor
       pos = toReal level _snakeCellPos
-  Sprite.draw mempty tex Config.cellSize pos
+  Sprite.draw tex Config.cellSize pos
 
 drawUI :: SystemW ()
 drawUI = pure ()

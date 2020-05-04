@@ -5,10 +5,11 @@ module Snake.Components.Food.System
   , destroy
   ) where
 
+import Control.Monad (when, void)
 import Apecs (Entity, Not(..), cmap, cmapM, cmapM_, newEntity, ($=), ($~))
 import qualified Apecs.System.Random as Random
 import Control.Lens ((+~))
-import GHC.Float (float2Int)
+import GHC.Float (int2Float, float2Int)
 import Linear (V2(..), (^*))
 
 import Snake.Config (Level(..))
@@ -28,9 +29,10 @@ spawn Level{..} = do
   newEntity Food{..}
 
 tick :: Level -> Float -> SystemW ()
-tick level dt = do
-  cmap $ foodTimer +~ dt
-  sometimes (dt / 10.0) (spawn level)
+tick level@Level{..} dt = cmapM_ \(Food{..}, food) -> do
+  food $~ foodTimer +~ dt
+  when (_foodTimer > int2Float _levelFoodTTL) $
+    spawn level *> destroy food
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @FoodComponents

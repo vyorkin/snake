@@ -10,5 +10,5 @@ import qualified Snake.Components.Time.System as Time
 
 tick :: Level -> Float -> SystemW ()
 tick level dt = Time.unlessPaused do
-  Snake.tick level dt
+  Snake.tick dt
   Food.tick level dt

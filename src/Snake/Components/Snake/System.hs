@@ -35,8 +35,8 @@ new Level{..} = do
       _snakeTimer = 0.0
   newEntity Snake{..}
 
-tick :: Level -> Float -> SystemW ()
-tick _level dt = cmapM_ \(Snake{..}, snake) -> do
+tick :: Float -> SystemW ()
+tick dt = cmapM_ \(Snake{..}, snake) -> do
   let delta = dirToV2 _snakeDir ^* float2Int _snakeTimer
   snake $~ snakeHead.snakeCellPos +~ delta
   snake $~ snakeTimer %~ \t ->

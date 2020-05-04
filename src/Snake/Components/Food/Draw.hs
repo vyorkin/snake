@@ -1,6 +1,5 @@
 module Snake.Components.Food.Draw where
 
-import Control.Lens ((&), (.~))
 import qualified Apecs
 
 import Snake.Components.Textures (toTextureKey)
@@ -16,8 +15,4 @@ draw level = Apecs.cmapM_ \Food{..} -> do
   let
     pos = toReal level _foodPos
     tex = toTextureKey "food" _foodType
-    eff =
-      if _foodTimer < 2.0
-      then mempty & Sprite.effectsOutline .~ Just 1.0
-      else mempty
-  Sprite.draw eff tex Config.cellSize pos
+  Sprite.draw tex Config.cellSize pos

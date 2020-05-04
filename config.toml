@@ -5,4 +5,4 @@ game.name = "Snake"
   height = 20
   snakeSpeed = 6.0
   foodSpawn = 1
-  foodTTL = 1
+  foodTTL = 5
