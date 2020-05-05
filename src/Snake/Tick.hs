@@ -2,12 +2,10 @@ module Snake.Tick
   ( tick
   ) where
 
-import Control.Monad (when, forM_)
-import Data.Proxy (Proxy(..))
-import Apecs (Not(..), global, cmap, cmapM, cmapM_, destroy)
+import Control.Monad (forM_)
+import Apecs (global)
 import GHC.Float (int2Float)
 import qualified Apecs
-import Debug.Trace (traceM)
 
 import Snake.Components
 import Snake.System (every)
@@ -18,9 +16,10 @@ import qualified Snake.Components.Delayed.System as Delayed
 
 tick :: Float -> SystemW ()
 tick dt = Time.unlessPaused do
+  Level{..} <- Apecs.get global
   Time.tick dt
   Delayed.tick dt
-  Snake.tick dt
+  every dt (1 / _levelSnakeSpeed) 0 Snake.tick
   spawn dt
 
 spawn :: Float -> SystemW ()
