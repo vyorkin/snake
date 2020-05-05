@@ -1,12 +1,16 @@
 module Snake.Components.Time.System
-  ( unlessPaused
+  ( tick
+  , unlessPaused
   , togglePause
   ) where
 
 import Apecs (Not(..), get, global, ($=))
+import qualified Apecs
 
-import Snake.Components (SystemW)
-import Snake.Components.Time.Types (Pause(..))
+import Snake.Components (SystemW, Time(..), Pause(..))
+
+tick :: Float -> SystemW ()
+tick dt = Apecs.modify global $ \(Time t) -> Time (t + dt)
 
 unlessPaused :: SystemW () -> SystemW ()
 unlessPaused action =

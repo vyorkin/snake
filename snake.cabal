@@ -44,19 +44,18 @@ library
                          Snake.Components.Programs
                          Snake.Components.Textures
 
-                         Snake.Components.Time.Types
+                         Snake.Components.Delayed.Types
+                         Snake.Components.Delayed.System
+
+                         Snake.Components.Level.System
+
                          Snake.Components.Time.System
 
-                         Snake.Components.Snake.Types
                          Snake.Components.Snake.System
                          Snake.Components.Snake.Draw
 
-                         Snake.Components.Food.Types
                          Snake.Components.Food.System
                          Snake.Components.Food.Draw
-
-                         Snake.Components.Block.Types
-                         Snake.Components.Block.Draw
 
                          -- Snake.Components.Hole
                          -- Snake.Components.Bomb
@@ -94,6 +93,7 @@ library
                        -Wredundant-constraints
                        -fhide-source-paths
                        -Wpartial-fields
+                    -- -Wunused-packages
 
   default-language:    Haskell2010
   default-extensions:  ConstraintKinds

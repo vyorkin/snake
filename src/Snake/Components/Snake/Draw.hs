@@ -7,30 +7,28 @@ import System.FilePath ((</>))
 import Control.Monad (forM_)
 import Control.Lens ((&), (.~))
 import Linear (V2(..), lerp, (^*))
-import Data.List.NonEmpty (NonEmpty(..))
 import GHC.Float (int2Float)
+import Apecs (cmapM_)
 import qualified Apecs.System.Random as Random
 import qualified Apecs
 
-import Snake.Config (Level(..))
 import qualified Snake.Config as Config
-import Snake.Components (SystemW)
-import Snake.Components.Snake.Types
+import Snake.Components
 import Snake.Components.Textures (toTextureKey)
+import Snake.Components.Level.System (levelSize)
 import qualified Snake.Components.Textures as Textures
 import qualified Snake.Programs.Sprite as Sprite
 import Snake.Math (toReal)
 
-draw :: Level -> SystemW ()
-draw level = Apecs.cmapM_ \Snake{..} -> do
-  drawCell level _snakeHead
-  forM_ _snakeTail (drawCell level)
+draw :: SystemW ()
+draw = cmapM_ \(Snake{..}) -> forM_ _snakeBody drawBlock
 
-drawCell :: Level -> SnakeCell -> SystemW ()
-drawCell level SnakeCell{..} = do
-  let tex = toTextureKey "snake" _snakeCellColor
-      pos = toReal level _snakeCellPos
-  Sprite.draw tex Config.cellSize pos
+drawBlock :: SnakeBlock -> SystemW ()
+drawBlock SnakeBlock{..} = do
+  size <- levelSize
+  let tex = toTextureKey "snake" _snakeBlockColor
+      pos = toReal size Config.blockSize (int2Float <$> _snakeBlockPos)
+  Sprite.draw tex Config.blockSize pos
 
 drawUI :: SystemW ()
 drawUI = pure ()

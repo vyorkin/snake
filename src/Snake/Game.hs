@@ -23,7 +23,7 @@ run Config{..} = do
   SDL.initializeAll
   SDL.HintRenderScaleQuality $= SDL.ScaleNearest -- ScaleLinear
 
-  let windowCfg = glWindow SDL.FullscreenDesktop -- Fullscree, Windowed
+  let windowCfg = glWindow SDL.Windowed -- Fullscreen, FullscreenDesktop, Windowed
   window <- SDL.createWindow _configName windowCfg
   SDL.showWindow window
 
@@ -32,6 +32,7 @@ run Config{..} = do
   -- Enable VSync
   SDL.swapInterval $= SDL.SynchronizedUpdates
 
+  -- Enable blending
   GL.blend $= GL.Enabled
   GL.blendFunc $= (GL.SrcAlpha, GL.OneMinusSrcAlpha)
 
@@ -43,7 +44,7 @@ run Config{..} = do
     Programs.loadAll
     Textures.loadAll
     Scene.init _configLevel
-    mainLoop _configLevel window
+    mainLoop window
 
   SDL.destroyWindow window
   SDL.quit

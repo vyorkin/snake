@@ -1,38 +1,34 @@
 module Snake.Components.Food.System
   ( FoodComponents
   , spawn
-  , tick
   , destroy
   ) where
 
-import Control.Monad (when, void)
-import Apecs (Entity, Not(..), cmap, cmapM, cmapM_, newEntity, ($=), ($~))
+import Control.Monad (void)
+import qualified Apecs
+import Apecs (Entity, Not(..), global, newEntity, ($=))
 import qualified Apecs.System.Random as Random
-import Control.Lens ((+~))
-import GHC.Float (int2Float, float2Int)
-import Linear (V2(..), (^*))
 
-import Snake.Config (Level(..))
-import Snake.Components.Food.Types
-import Snake.Components (SystemW)
-import Snake.System (sometimes)
+import Snake.Components
+import Snake.Components.Level.System (genPosition)
+import Snake.Components.Delayed.System (temp)
 
-type FoodComponents = (Food)
+type FoodComponents = (Food, Position)
 
-spawn :: Level -> SystemW Entity
-spawn Level{..} = do
-  x <- Random.range (1, _levelWidth - 1)
-  y <- Random.range (1, _levelHeight - 1)
-  _foodType <- Random.boundedEnum
-  let _foodPos = V2 x y
-      _foodTimer = 0.0
-  newEntity Food{..}
+spawn :: SystemW ()
+spawn = do
+  Level{..} <- Apecs.get global
+  void $ temp _levelFoodTTL new destroy
 
-tick :: Level -> Float -> SystemW ()
-tick level@Level{..} dt = cmapM_ \(Food{..}, food) -> do
-  food $~ foodTimer +~ dt
-  when (_foodTimer > int2Float _levelFoodTTL) $
-    spawn level *> destroy food
+new :: SystemW Entity
+new = do
+  Level{..} <- Apecs.get global
+  food <- genFood
+  position <- genPosition
+  newEntity (food, position)
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @FoodComponents
+
+genFood :: SystemW Food
+genFood = Food <$> Random.boundedEnum

@@ -13,8 +13,7 @@ import System.Exit (exitSuccess)
 import qualified Apecs
 import qualified SDL
 
-import Snake.Components (Window(..), Camera(..), SystemW)
-import Snake.Components.Snake.Types (Dir(..))
+import Snake.Components
 import qualified Snake.Components.Snake.System as Snake
 import qualified Snake.Components.Time.System as Time
 import qualified Snake.Window as Window
@@ -49,7 +48,7 @@ handle window camera = do
     onWindowSizeChanged SDL.WindowSizeChangedEventData{..} = do
       traceM $ "Window resized: " <> show windowSizeChangedEventSize
       let V2 width height = fromIntegral <$> windowSizeChangedEventSize
-      Apecs.set Apecs.global $ Window
+      Apecs.set global $ Window
         { _windowWidth  = width
         , _windowHeight = height
         , _windowScale  = 1.0

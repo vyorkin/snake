@@ -5,22 +5,22 @@ module Snake.MainLoop
 import Control.Monad (unless)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.StateVar (($=))
-import Linear (V2(..), V4(..), (^*))
+import Linear (V4(..), (^*))
+import Apecs (global)
 import qualified Apecs
 import qualified Graphics.Rendering.OpenGL as GL
 import qualified SDL
 
 import Graphics.Rendering.OpenGL.Extra (glDouble)
-import Snake.Config (Level(..))
-import Snake.Components (SystemW, Camera(..), Window(..))
+import Snake.Components (SystemW, Window(..), Camera(..))
+import Snake.Tick (tick)
 import qualified Snake.Events as Events
-import qualified Snake.Tick as Tick
 import qualified Snake.Draw as Draw
 import qualified Snake.Window as Window
 
-mainLoop :: Level -> SDL.Window -> SystemW ()
-mainLoop level@Level{..} sdlWindow = do
-  (camera@Camera{..}, window) <- Apecs.get Apecs.global
+mainLoop :: SDL.Window -> SystemW ()
+mainLoop sdlWindow = do
+  (camera@Camera{..}, window) <- Apecs.get global
 
   let
     windowQuad = glDouble <$> Window.quad window
@@ -31,7 +31,7 @@ mainLoop level@Level{..} sdlWindow = do
 
   quit <- Events.handle window camera
   unless quit do
-    Tick.tick level (1 / 60)
+    tick (1 / 60)
 
     setViewport window
     clearScreen
@@ -39,14 +39,12 @@ mainLoop level@Level{..} sdlWindow = do
     resetProjection 1.0
     Draw.drawBackdrop
     resetProjection (glDouble _cameraScale)
-    Draw.drawField level
-    resetProjection 1.0
-    Draw.drawScene level
+    Draw.drawScene
     resetProjection 1.0
     Draw.drawUI
 
     SDL.glSwapWindow sdlWindow
-    mainLoop level sdlWindow
+    mainLoop sdlWindow
   where
     setViewport Window{..} = liftIO $ GL.viewport $=
       ( GL.Position 0 0

@@ -1,11 +1,10 @@
 module Snake.Config
   ( -- * Types
     Config(..)
-  , Level(..)
   , -- * Functions
     load
     -- * Constants
-  , cellSize
+  , blockSize
   ) where
 
 import Data.Text (Text)
@@ -14,24 +13,13 @@ import Control.Monad.IO.Class (MonadIO)
 import Toml (TomlCodec, (.=))
 import qualified Toml
 
+import Snake.Components (Level(..))
+
 data Config = Config
   { _configName :: !Text
     -- ^ Name of the game.
   , _configLevel :: !Level
     -- ^ Level config.
-  } deriving (Show)
-
-data Level = Level
-  { _levelWidth :: !Int
-    -- ^ Game field width.
-  , _levelHeight :: !Int
-    -- ^ Game field height.
-  , _levelSnakeSpeed :: !Float
-    -- ^ Initial speed of the Snake.
-  , _levelFoodSpawn :: !Int
-    -- ^ Amount of food to spawn at a time.
-  , _levelFoodTTL :: !Int
-    -- ^ Food lifetime.
   } deriving (Show)
 
 -- | Loads the @config.toml@ file.
@@ -44,12 +32,15 @@ levelCodec = Level
   <*> Toml.int "height" .= _levelHeight
   <*> Toml.float "snakeSpeed" .= _levelSnakeSpeed
   <*> Toml.int "foodSpawn" .= _levelFoodSpawn
-  <*> Toml.int "foodTTL" .= _levelFoodTTL
+  <*> Toml.float "foodTTL" .= _levelFoodTTL
+  <*> Toml.float "bombTTL" .= _levelBombTTL
+  <*> Toml.float "holeTTL" .= _levelHoleTTL
+  <*> Toml.float "wallTTL" .= _levelWallTTL
 
 configCodec :: TomlCodec Config
 configCodec = Config
   <$> Toml.text "game.name" .= _configName
   <*> Toml.table levelCodec "level" .= _configLevel
 
-cellSize :: V2 Float
-cellSize = V2 64.0 64.0
+blockSize :: V2 Float
+blockSize = V2 64.0 64.0
