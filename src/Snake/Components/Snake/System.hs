@@ -34,7 +34,11 @@ newSnake = do
     }
 
 tick :: SystemW ()
-tick = eat >> move
+tick = collide >> eat >> move
+
+collide :: SystemW ()
+collide = cmapM_ \(snake@Snake{..}, snakeEty) ->
+  when (overlapsItself snake) $ destroy snakeEty
 
 eat :: SystemW ()
 eat =
@@ -55,6 +59,11 @@ move = cmapM_ \(snake@Snake{..}, snakeEty) -> do
     snakeEty $~ snakeBody %~ ((:) newHead)
   else
     snakeEty $~ snakeBody %~ ((:) newHead . init)
+
+overlapsItself :: Snake -> Bool
+overlapsItself snake@Snake{..} =
+  let newPos = nextPos snake
+   in any (\SnakeBlock{..} -> _snakeBlockPos == newPos) (tail _snakeBody)
 
 nextPos :: Snake -> V2 Int
 nextPos Snake{..} = _snakeBlockPos (head _snakeBody) + dirToV2 _snakeDir
