@@ -19,4 +19,4 @@ draw = cmapM_ \(Food food, LifeSpan t, Position pos) -> do
   size <- levelSize
   let posReal = toReal size Config.blockSize (int2Float <$> pos)
       tex = toTextureKey "food" food
-  Sprite.draw tex Config.blockSize posReal (min 1.0 t)
+  Sprite.draw tex (Config.blockSize * 0.8) posReal (min 1.0 t)

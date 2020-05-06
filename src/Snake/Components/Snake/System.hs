@@ -36,27 +36,28 @@ newSnake = do
 tick :: SystemW ()
 tick = eat >> move
 
+eat :: SystemW ()
+eat =
+  cmapM_ \(snake@Snake{..}, snakeEty) ->
+  cmapM_ $ \(Food{..}, Position foodPos, foodEty) -> do
+    when (nextPos snake == foodPos) do
+      Food.destroy foodEty
+      snakeEty $~ snakeEating .~ True
+
 move :: SystemW ()
-move = cmapM_ \(Snake{..}, snake) -> do
+move = cmapM_ \(snake@Snake{..}, snakeEty) -> do
   let oldHead = head _snakeBody
-      oldPos = _snakeBlockPos oldHead
-      newPos = oldPos + dirToV2 _snakeDir
+      newPos  = nextPos snake
       newHead = oldHead { _snakeBlockPos = newPos }
   if _snakeEating
   then do
-    snake $~ snakeEating .~ False
-    snake $~ snakeBody %~ ((:) newHead)
+    snakeEty $~ snakeEating .~ False
+    snakeEty $~ snakeBody %~ ((:) newHead)
   else
-    snake $~ snakeBody %~ ((:) newHead . init)
+    snakeEty $~ snakeBody %~ ((:) newHead . init)
 
-eat :: SystemW ()
-eat =
-  cmapM_ \(Snake{..}, snake) ->
-  cmapM_ $ \(Food{..}, Position foodPos, food) -> do
-    let snakePos = _snakeBlockPos $ head _snakeBody
-    when (snakePos == foodPos) do
-      Food.destroy food
-      snake $~ snakeEating .~ True
+nextPos :: Snake -> V2 Int
+nextPos Snake{..} = _snakeBlockPos (head _snakeBody) + dirToV2 _snakeDir
 
 spawn :: SystemW ()
 spawn = void new
