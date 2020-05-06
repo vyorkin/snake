@@ -13,7 +13,7 @@ A simple snake game.
 All credits to https://icrbow.itch.io/ who inspired me and built
 the framework on which this game is based.
 
-![Screen0](img/screen0.png)
+![Screen0](img/snake1.gif)
 
 ## Building
 
