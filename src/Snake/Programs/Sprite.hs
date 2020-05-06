@@ -25,14 +25,16 @@ draw
   => Textures.Key
   -> V2 Float
   -> V2 Float
+  -> Float
   -> Apecs.SystemT w m ()
-draw key size pos = do
+draw key size pos opacity = do
   Textures.Texture{textureObject} <- Textures.get key
 
   Programs.withCompiled program $ \setUniform withAttribute -> do
     GL.activeTexture $= GL.TextureUnit 0
     GL.textureBinding GL.Texture2D $= Just textureObject
     setUniform "image" $ GL.TextureUnit 0
+    setUniform "u_opacity" opacity
 
     withAttribute "texcoord" $ \texcoord ->
       Lib.withVertexAttribArray texcoord Lib.texVertices $

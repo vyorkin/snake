@@ -3,7 +3,7 @@ module Snake.Tick
   ) where
 
 import Control.Monad (forM_)
-import Apecs (global)
+import Apecs (global, cmap)
 import GHC.Float (int2Float)
 import qualified Apecs
 
@@ -18,9 +18,13 @@ tick :: Float -> SystemW ()
 tick dt = Time.unlessPaused do
   Level{..} <- Apecs.get global
   Time.tick dt
+  shortenLife dt
   Delayed.tick dt
   every dt (1 / _levelSnakeSpeed) 0 Snake.tick
   spawn dt
+
+shortenLife :: Float -> SystemW ()
+shortenLife dt = cmap $ \(LifeSpan t) -> LifeSpan (t - dt)
 
 spawn :: Float -> SystemW ()
 spawn dt = do

@@ -22,7 +22,7 @@ drawBlock SnakeBlock{..} = do
   size <- levelSize
   let tex = toTextureKey "snake" _snakeBlockColor
       pos = toReal size Config.blockSize (int2Float <$> _snakeBlockPos)
-  Sprite.draw tex Config.blockSize pos
+  Sprite.draw tex Config.blockSize pos 1.0
 
 drawUI :: SystemW ()
 drawUI = pure ()

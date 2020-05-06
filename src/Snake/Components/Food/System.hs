@@ -13,7 +13,7 @@ import Snake.Components
 import Snake.Components.Level.System (genPosition)
 import Snake.Components.Delayed.System (temp)
 
-type FoodComponents = (Food, Position)
+type FoodComponents = (Food, Position, LifeSpan)
 
 spawn :: SystemW ()
 spawn = do
@@ -25,7 +25,7 @@ new = do
   Level{..} <- Apecs.get global
   food <- genFood
   position <- genPosition
-  newEntity (food, position)
+  newEntity (food, position, LifeSpan _levelFoodTTL)
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @FoodComponents

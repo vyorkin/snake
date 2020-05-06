@@ -56,9 +56,9 @@ newtype Time = Time Float
 
 instance Component Time where type Storage Time = Global Time
 
-newtype Position = Position { unPosition :: V2 Int } deriving (Eq, Ord, Show)
-newtype Density = Density { unDensity :: Int } deriving (Eq, Ord, Show)
-newtype Expiring = Expiring { unExpiring :: Bool } deriving (Show)
+newtype Position = Position { unPosition :: V2 Int } deriving (Show)
+newtype Density = Density { unDensity :: Int } deriving (Show)
+newtype LifeSpan = LifeSpan { unLifeSpan :: Float } deriving (Show)
 newtype Hole = Hole { unHole :: V2 Int } deriving (Show)
 newtype Food = Food { unFood :: FoodType } deriving (Show)
 newtype Wall = Wall { unWall :: Color } deriving (Show)
@@ -140,7 +140,7 @@ makeLenses ''Snake
 makeMapComponents
   [ ''Position
   , ''Density
-  , ''Expiring
+  , ''LifeSpan
   , ''Hole
   , ''Food
   , ''Wall
@@ -154,7 +154,7 @@ makeWorld "World"
 
   , ''Position
   , ''Density
-  , ''Expiring
+  , ''LifeSpan
   , ''Hole
   , ''Food
   , ''Wall

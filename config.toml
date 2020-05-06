@@ -3,7 +3,7 @@ game.name = "Snake"
 [level]
   width = 20
   height = 20
-  snakeSpeed = 5.0
+  snakeSpeed = 8.0
   foodSpawn = 2
   foodTTL = 5.0
   bombTTL = 4.0

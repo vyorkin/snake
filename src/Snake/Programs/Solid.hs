@@ -24,5 +24,6 @@ drawWith
   -> Apecs.SystemT w m ()
 drawWith color4 action =
   Programs.withCompiled (Programs.Key "solid") $ \setUniform withAttribute -> do
-    setUniform "mycolor" $ toGL color4
+    setUniform "color" $ toGL color4
+    setUniform "u_opacity" (1.0 :: Float)
     withAttribute "coord2d" action

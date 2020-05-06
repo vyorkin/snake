@@ -44,10 +44,10 @@ move = cmapM_ \(Snake{..}, snake) -> do
       newHead = oldHead { _snakeBlockPos = newPos }
   if _snakeEating
   then do
-    snake $~ snakeBody %~ ((:) newHead)
     snake $~ snakeEating .~ False
+    snake $~ snakeBody %~ ((:) newHead)
   else
-    snake $~ snakeBody %~ \body -> newHead:(init body)
+    snake $~ snakeBody %~ ((:) newHead . init)
 
 eat :: SystemW ()
 eat =
