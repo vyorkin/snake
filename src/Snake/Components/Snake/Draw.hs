@@ -4,7 +4,9 @@ module Snake.Components.Snake.Draw
   ) where
 
 import Control.Monad (forM_)
+import Control.Lens ((^.))
 import GHC.Float (int2Float)
+import Linear (V2)
 import Apecs (cmapM_)
 
 import qualified Snake.Config as Config
@@ -15,13 +17,13 @@ import qualified Snake.Programs.Sprite as Sprite
 import Snake.Math (toReal)
 
 draw :: SystemW ()
-draw = cmapM_ \(Snake{..}) -> forM_ _snakeBody drawBlock
+draw = cmapM_ \s -> forM_ (s^.snakeBody) (drawBlock $ s^.snakeColor)
 
-drawBlock :: SnakeBlock -> SystemW ()
-drawBlock SnakeBlock{..} = do
+drawBlock :: Color -> V2 Int -> SystemW ()
+drawBlock color position = do
   size <- levelSize
-  let tex = toTextureKey "snake" _snakeBlockColor
-      pos = toReal size Config.blockSize (int2Float <$> _snakeBlockPos)
+  let tex = toTextureKey "snake" color
+      pos = toReal size Config.blockSize (int2Float <$> position)
   Sprite.draw tex Config.blockSize pos 1.0
 
 drawUI :: SystemW ()

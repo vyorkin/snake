@@ -64,15 +64,11 @@ newtype Food = Food { unFood :: FoodType } deriving (Show)
 newtype Wall = Wall { unWall :: Color } deriving (Show)
 newtype Bomb = Bomb { unBomb :: BombType } deriving (Show)
 
-data SnakeBlock = SnakeBlock
-  { _snakeBlockColor :: !Color
-  , _snakeBlockPos :: !(V2 Int)
-  } deriving (Show)
-
 data Snake = Snake
   { _snakeDir :: !Dir
-  , _snakeBody :: ![SnakeBlock]
+  , _snakeBody :: ![V2 Int]
   , _snakeEating :: !Bool
+  , _snakeColor :: !Color
   } deriving (Show)
 
 data Dir = U | D | L | R
@@ -134,7 +130,6 @@ instance Component Camera where type Storage Camera = Global Camera
 makeLenses ''Level
 makeLenses ''Camera
 makeLenses ''Window
-makeLenses ''SnakeBlock
 makeLenses ''Snake
 
 makeMapComponents

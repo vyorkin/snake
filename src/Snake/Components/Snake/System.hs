@@ -10,7 +10,7 @@ module Snake.Components.Snake.System
   ) where
 
 import Control.Monad (when, void)
-import Control.Lens ((.~), (%~))
+import Control.Lens ((^.), (.~), (%~), _head)
 import Apecs (Entity, Not(..), global, cmap, cmapM_, newEntity, ($=), ($~))
 import qualified Apecs
 import qualified Apecs.System.Random as Random
@@ -25,13 +25,11 @@ type SnakeComponents = (Player, Snake)
 
 newSnake :: SystemW Snake
 newSnake = do
-  dir <- Random.boundedEnum
-  hd  <- levelCenter >>= genBlock
-  pure $ Snake
-    { _snakeDir = dir
-    , _snakeBody = pure hd
-    , _snakeEating = False
-    }
+  let _snakeEating = False
+  _snakeDir <- Random.boundedEnum
+  _snakeBody <- pure <$> levelCenter
+  _snakeColor <- Random.boundedEnum
+  pure Snake{..}
 
 tick :: SystemW ()
 tick = collide >> eat >> move
@@ -42,47 +40,32 @@ collide = cmapM_ \(snake@Snake{..}, snakeEty) ->
 
 eat :: SystemW ()
 eat =
-  cmapM_ \(snake@Snake{..}, snakeEty) ->
-  cmapM_ $ \(Food{..}, Position foodPos, foodEty) -> do
+  cmapM_ \(snake, snakeEty) ->
+  cmapM_ \(Food{..}, Position foodPos, foodEty) -> do
     when (nextPos snake == foodPos) do
       Food.destroy foodEty
       snakeEty $~ snakeEating .~ True
 
 move :: SystemW ()
-move = cmapM_ \(snake@Snake{..}, snakeEty) -> do
-  let oldHead = head _snakeBody
-      newPos  = nextPos snake
-      newHead = oldHead { _snakeBlockPos = newPos }
-  if _snakeEating
+move = cmapM_ \(s, ety) ->
+  if s^.snakeEating
   then do
-    snakeEty $~ snakeEating .~ False
-    snakeEty $~ snakeBody %~ ((:) newHead)
+    ety $~ snakeEating .~ False
+    ety $~ snakeBody %~ ((:) (nextPos s))
   else
-    snakeEty $~ snakeBody %~ ((:) newHead . init)
+    ety $~ snakeBody %~ ((:) (nextPos s) . init)
 
 overlapsItself :: Snake -> Bool
-overlapsItself snake@Snake{..} =
-  let newPos = nextPos snake
-   in any (\SnakeBlock{..} -> _snakeBlockPos == newPos) (tail _snakeBody)
+overlapsItself s = nextPos s `elem` tail (s^.snakeBody)
 
 nextPos :: Snake -> V2 Int
-nextPos Snake{..} = _snakeBlockPos (head _snakeBody) + dirToV2 _snakeDir
+nextPos s = head (s^.snakeBody) + dirToV2 (s^.snakeDir)
 
 spawn :: SystemW ()
 spawn = void new
 
 new :: SystemW Entity
-new = do
-  snake <- newSnake
-  newEntity (Player, snake)
-
-genBlock :: V2 Int -> SystemW SnakeBlock
-genBlock pos = do
-  color <- Random.boundedEnum
-  pure $ SnakeBlock
-    { _snakeBlockColor = color
-    , _snakeBlockPos = pos
-    }
+new = newSnake >>= \s -> newEntity (Player, s)
 
 destroy :: Entity -> SystemW ()
 destroy e = e $= Not @SnakeComponents
